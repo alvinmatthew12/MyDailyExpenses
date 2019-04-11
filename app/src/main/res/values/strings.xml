@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MyDailyExpenses</string>
+    <string name="expense_for">Expense For...</string>
+    <string name="date">20/03/2019</string>
+    <string name="RM">RM</string>
+    <string name="save">SAVE</string>
+    <string name="expenses_list">Expenses List</string>
+    <string name="time">07:00:06</string>
+</resources>
