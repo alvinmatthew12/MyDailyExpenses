@@ -20,9 +20,10 @@ public class ExpensesDB extends SQLiteOpenHelper {
     public static final String colExpName = "expenses_name";
     public static final String colExpPrice = "expenses_price";
     public static final String colExpDate = "expenses_date";
+    public static final String colExpTime = "expenses_time";
     public static final String colExpId = "expenses_id";
 
-    public static final String strCrtTblExpenses = "CREATE TABLE "+ tblNameExpense + " ("+ colExpId +" INTEGER PRIMARY KEY, " + colExpName +" TEXT, " + colExpPrice +" REAL, "+ colExpDate +" DATE)";
+    public static final String strCrtTblExpenses = "CREATE TABLE "+ tblNameExpense + " ("+ colExpId +" INTEGER PRIMARY KEY, " + colExpName +" TEXT, " + colExpPrice +" REAL, "+ colExpDate +" DATE, " + colExpTime + " TEXT)";
     public static final String strDropTblExpenses = "DROP TABLE IF EXISTS "+ tblNameExpense;
 
     public ExpensesDB(Context context) {
@@ -48,6 +49,7 @@ public class ExpensesDB extends SQLiteOpenHelper {
         values.put(colExpName, meExpense.getStrExpName());
         values.put(colExpPrice, meExpense.getStrExpPrice());
         values.put(colExpDate, meExpense.getStrExpDate());
+        values.put(colExpTime, meExpense.getStrExpTime());
 
         retResult = db.insert(tblNameExpense, null, values);
         return retResult;
@@ -96,6 +98,7 @@ public class ExpensesDB extends SQLiteOpenHelper {
         modelExpenses.setStrExpPrice(cursor.getDouble(cursor.getColumnIndex(colExpPrice)));
         modelExpenses.setStrExpName(cursor.getString(cursor.getColumnIndex(colExpName)));
         modelExpenses.setStrExpDate(cursor.getString(cursor.getColumnIndex(colExpDate)));
+        modelExpenses.setStrExpTime(cursor.getString(cursor.getColumnIndex(colExpTime)));
         return modelExpenses;
     }
 
@@ -111,6 +114,7 @@ public class ExpensesDB extends SQLiteOpenHelper {
                 modelExpenses.setStrExpPrice(cursor.getDouble(cursor.getColumnIndex(colExpPrice)));
                 modelExpenses.setStrExpName(cursor.getString(cursor.getColumnIndex(colExpName)));
                 modelExpenses.setStrExpDate(cursor.getString(cursor.getColumnIndex(colExpDate)));
+                modelExpenses.setStrExpTime(cursor.getString(cursor.getColumnIndex(colExpTime)));
                 listExp.add(modelExpenses);
             } while (cursor.moveToNext());
         }

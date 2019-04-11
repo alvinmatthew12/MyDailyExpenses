@@ -5,11 +5,14 @@ public class ExpensesDBModel {
     String strExpName;
     double strExpPrice;
     String strExpDate;
+    String strExpTime;
 
-    public ExpensesDBModel(String strExpName, double strExpPrice, String strExpDate){
+    public ExpensesDBModel(String strExpName, double strExpPrice, String strExpDate, String strExpTime){
         this.strExpName = strExpName;
         this.strExpPrice = strExpPrice;
         this.strExpDate = strExpDate;
+        this.strExpTime = strExpTime;
+
     }
 
     public ExpensesDBModel()
@@ -25,4 +28,6 @@ public class ExpensesDBModel {
     }
     public String getStrExpDate() {return strExpDate;}
     public void setStrExpDate(String strExpDate) {this.strExpDate = strExpDate;}
+    public String getStrExpTime() { return strExpTime; }
+    public void setStrExpTime(String strExpTime) { this.strExpTime = strExpTime; }
 }

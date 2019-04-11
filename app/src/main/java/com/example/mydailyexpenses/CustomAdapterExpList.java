@@ -32,6 +32,7 @@ public class CustomAdapterExpList extends RecyclerView.Adapter<CustomAdapterExpL
         holder.txtVwExpName.setText(expensesDBModel.getStrExpName());
         holder.txtVwExpPrice.setText(String.valueOf(expensesDBModel.getStrExpPrice()));
         holder.txtVwExpDate.setText(expensesDBModel.getStrExpDate());
+        holder.txtVwExpTime.setText(expensesDBModel.getStrExpTime());
 
     }
 
@@ -41,13 +42,14 @@ public class CustomAdapterExpList extends RecyclerView.Adapter<CustomAdapterExpL
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView txtVwExpName, txtVwExpPrice, txtVwExpDate;
+        TextView txtVwExpName, txtVwExpPrice, txtVwExpDate, txtVwExpTime;
         public ViewHolder(View itemView){
             super(itemView);
 
             txtVwExpName = itemView.findViewById(R.id.txtVwExpName);
             txtVwExpPrice = itemView.findViewById(R.id.txtVwExpPrice);
             txtVwExpDate = itemView.findViewById(R.id.txtVwExpDate);
+            txtVwExpTime = itemView.findViewById(R.id.txtVwTime);
         }
     }
 
