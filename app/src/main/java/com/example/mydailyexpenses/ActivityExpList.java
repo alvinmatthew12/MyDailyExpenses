@@ -18,6 +18,7 @@ public class ActivityExpList extends AppCompatActivity {
 
     RecyclerView recyclerViewExpList;
     ArrayList<ExpensesDBModel> expensesList;
+    CustomAdapterExpList.OnItemClickListener listener;
 
     ExpensesDB expensesDB;
     CustomAdapterExpList customAdapterExpList;
@@ -34,7 +35,14 @@ public class ActivityExpList extends AppCompatActivity {
 
         expensesDB = new ExpensesDB(getApplicationContext());
         expensesList = (ArrayList<ExpensesDBModel>) expensesDB.fnGetAllExpenses();
-        customAdapterExpList = new CustomAdapterExpList(expensesDB.fnGetAllExpenses());
+        listener = new CustomAdapterExpList.OnItemClickListener() {
+            @Override
+            public void onItemClick(ExpensesDBModel item) {
+                listener.onItemClick(item);
+            }
+        };
+
+        customAdapterExpList = new CustomAdapterExpList(expensesDB.fnGetAllExpenses(), listener);
 
         recyclerViewExpList.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewExpList.setAdapter(customAdapterExpList);

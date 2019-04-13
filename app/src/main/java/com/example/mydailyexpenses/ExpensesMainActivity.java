@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,6 +29,7 @@ import sqliteexpense.ExpensesDB;
 public class ExpensesMainActivity extends AppCompatActivity {
 
     EditText edtExpName,edtExpPrice,edtExpDate,edtExpTime;
+    ProgressBar progressBar;
     String strURL = "http://utem.web.id/globalWebService.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class ExpensesMainActivity extends AppCompatActivity {
         edtExpName = findViewById(R.id.edtName);
         edtExpPrice = findViewById(R.id.edtPrice);
         edtExpTime = findViewById(R.id.edtTime);
+        progressBar = findViewById(R.id.progressBar);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, strURL, new Response.Listener<String>(){
@@ -72,12 +75,45 @@ public class ExpensesMainActivity extends AppCompatActivity {
 
     }
 
-    public void fnSave(View view)
+    public void fnSave(final View view)
     {
-        ExpensesDBModel expensesDBModel = new ExpensesDBModel(edtExpName.getText().toString(), Double.parseDouble(edtExpPrice.getText().toString()),edtExpDate.getText().toString(), edtExpTime.getText().toString());
+        progressBar.setVisibility(View.VISIBLE);
+        view.setClickable(false);
+
+        final ExpensesDBModel expensesDBModel = new ExpensesDBModel(edtExpName.getText().toString(), Double.parseDouble(edtExpPrice.getText().toString()),edtExpDate.getText().toString(), edtExpTime.getText().toString());
         ExpensesDB expensesDB = new ExpensesDB(getApplicationContext());
         expensesDB.fnInsertExpense(expensesDBModel);
 
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, strURL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                view.setClickable(true);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.INVISIBLE);
+                view.setClickable(true);
+                Toast.makeText(getApplicationContext(),"Unable to make connection to web service", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError{
+                Map<String,String> params = new HashMap<String,String>();
+                params.put("selectFn", "fnAddExpenses");
+                params.put("varExpName", expensesDBModel.getStrExpName());
+                params.put("varExpPrice", String.valueOf(expensesDBModel.getStrExpPrice()));
+                params.put("varMobileDate", expensesDBModel.getStrExpDate());
+                params.put("varMobileTime", expensesDBModel.getStrExpTime());
+                return params;
+
+            }
+        };
+
+
+        requestQueue.add(stringRequest);
         Toast.makeText(getApplicationContext(), "Expenses Saved!", Toast.LENGTH_SHORT).show();
     }
 
@@ -86,7 +122,7 @@ public class ExpensesMainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    
+
 
 
 }

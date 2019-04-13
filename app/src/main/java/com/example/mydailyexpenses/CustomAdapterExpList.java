@@ -7,16 +7,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 import model.ExpensesDBModel;
 
 public class CustomAdapterExpList extends RecyclerView.Adapter<CustomAdapterExpList.ViewHolder> {
 
-    List<ExpensesDBModel> listExpenses;
+    public interface OnItemClickListener{
+        void onItemClick(ExpensesDBModel item);
+    }
 
-    public CustomAdapterExpList(List<ExpensesDBModel> expensesDBModels) {
+    private final List<ExpensesDBModel> listExpenses;
+    private final OnItemClickListener listener;
+
+    public CustomAdapterExpList(List<ExpensesDBModel> expensesDBModels, OnItemClickListener listener) {
         this.listExpenses = expensesDBModels;
+        this.listener = listener;
     }
 
     @NonNull
@@ -28,7 +36,7 @@ public class CustomAdapterExpList extends RecyclerView.Adapter<CustomAdapterExpL
 
     @Override
     public void onBindViewHolder(@NonNull CustomAdapterExpList.ViewHolder holder, int position) {
-        ExpensesDBModel expensesDBModel = listExpenses.get(position);
+        ExpensesDBModel expensesDBModel = holder.bind(listExpenses.get(position), listener);
         holder.txtVwExpName.setText(expensesDBModel.getStrExpName());
         holder.txtVwExpPrice.setText(String.valueOf(expensesDBModel.getStrExpPrice()));
         holder.txtVwExpDate.setText(expensesDBModel.getStrExpDate());
@@ -50,6 +58,20 @@ public class CustomAdapterExpList extends RecyclerView.Adapter<CustomAdapterExpL
             txtVwExpPrice = itemView.findViewById(R.id.txtVwExpPrice);
             txtVwExpDate = itemView.findViewById(R.id.txtVwExpDate);
             txtVwExpTime = itemView.findViewById(R.id.txtVwTime);
+        }
+
+        public ExpensesDBModel bind(final ExpensesDBModel expensesDBModel, final OnItemClickListener listener) {
+            txtVwExpName.setText(expensesDBModel.getStrExpName());
+            txtVwExpPrice.setText(String.valueOf(expensesDBModel.getStrExpPrice()));
+            txtVwExpDate.setText(expensesDBModel.getStrExpDate());
+            txtVwExpTime.setText(expensesDBModel.getStrExpTime());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(expensesDBModel);
+                }
+            });
+            return expensesDBModel;
         }
     }
 
