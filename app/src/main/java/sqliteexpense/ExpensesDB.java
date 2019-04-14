@@ -5,9 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import com.example.mydailyexpenses.CustomAdapterExpList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,22 +52,18 @@ public class ExpensesDB extends SQLiteOpenHelper {
         return retResult;
     }
 
-
-//    sum expenses function
-//
-//    public double fnGetTotalExpenses()
-//    {
-//        double total = 0;
-//        String strSelQry = "SELECT SUM(" +colExpPrice +" ) FROM "+ tblNameExpense;
-//        Cursor cursor = this.getReadableDatabase().rawQuery(strSelQry, null);
-//        if (cursor != null)
-//        {
-//            Log.d("A", String.valueOf(cursor.getCount()));
-//            cursor.moveToFirst();
-//            total = cursor.getDouble(cursor.getColumnIndex(colExpPrice));
-//        }
-//        return total;
-//    }
+    public float fnUpdateExpenses(ExpensesDBModel meExpense)
+    {
+        float retResult = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(colExpName, meExpense.getStrExpName());
+        values.put(colExpPrice, meExpense.getStrExpPrice());
+        values.put(colExpDate, meExpense.getStrExpDate());
+        values.put(colExpTime, meExpense.getStrExpTime());
+        retResult = db.update(tblNameExpense, values, "expenses_id = ?", new String[] {meExpense.getStrExpId()});
+        return retResult;
+    }
 
     public double fnGetTotalExpenses()
     {
@@ -82,9 +75,6 @@ public class ExpensesDB extends SQLiteOpenHelper {
         }
         return total;
     }
-
-//    sum expenses function end
-
 
     public ExpensesDBModel fnGetExpenses(int intExpId)
     {
@@ -111,6 +101,7 @@ public class ExpensesDB extends SQLiteOpenHelper {
         {
             do {
                 ExpensesDBModel modelExpenses = new ExpensesDBModel();
+                modelExpenses.setStrExpId(cursor.getString(cursor.getColumnIndex(colExpId)));
                 modelExpenses.setStrExpPrice(cursor.getDouble(cursor.getColumnIndex(colExpPrice)));
                 modelExpenses.setStrExpName(cursor.getString(cursor.getColumnIndex(colExpName)));
                 modelExpenses.setStrExpDate(cursor.getString(cursor.getColumnIndex(colExpDate)));

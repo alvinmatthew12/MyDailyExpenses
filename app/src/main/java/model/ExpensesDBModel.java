@@ -2,12 +2,14 @@ package model;
 
 public class ExpensesDBModel {
 
+    String strExpId;
     String strExpName;
     double strExpPrice;
     String strExpDate;
     String strExpTime;
 
-    public ExpensesDBModel(String strExpName, double strExpPrice, String strExpDate, String strExpTime){
+    public ExpensesDBModel(String strExpId, String strExpName, double strExpPrice, String strExpDate, String strExpTime){
+        this.strExpId = strExpId;
         this.strExpName = strExpName;
         this.strExpPrice = strExpPrice;
         this.strExpDate = strExpDate;
@@ -20,6 +22,8 @@ public class ExpensesDBModel {
 
     }
 
+    public String getStrExpId() { return strExpId; }
+    public void setStrExpId(String strExpId) { this.strExpId = strExpId; }
     public String getStrExpName() {return strExpName;}
     public void setStrExpName(String strExpName) {this.strExpName = strExpName;}
     public double getStrExpPrice() {return strExpPrice;}
