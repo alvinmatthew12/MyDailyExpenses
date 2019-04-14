@@ -10,9 +10,9 @@
 	}
 	else if (isset($_POST['selectFn']) && $_REQUEST['selectFn']=='fnAddExpense') {
 		$hostname = "127.0.0.1";
-		$username = "root";
-		$password = "";
-		$database = "database";
+		$username = "utemwebi_dailyexpenses_user";
+		$password = "dailyexpenses_user";
+		$database = "utemwebi_dailyexpenses";
 
 		$db = new PDO("mysql:host=$hostname;dbname=$database", $username, $password );
 
